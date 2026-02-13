@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ExpenserMon - Register</title>
+  <link rel="shortcut icon" href="Expenser.png" type="image/x-icon">
+  <link rel="stylesheet" href="styleRegister.css">
+</head>
+<body>
+
+  <div class="video-background-container">
+      <video autoplay loop muted playsinline class="video-background">
+          <source src="shadergradient (1).webm" type="video/webm">
+          <p>Your browser does not support the video tag.</p>
+      </video>
+  </div>
+
+  <nav class="navbar">
+      <div class="logo-container">
+          <a href="about.html" class="gabumon-link">
+              <img src="Gabumon.GIF" alt="Gabumon" class="gabumon-gif">
+          </a>
+          <div class="logo" onclick="window.location.href='homepag.html'">ExpenserMon</div>
+      </div>
+      <ul class="nav-links">
+          <li><a href="homepag.html">Home</a></li>
+      </ul>
+  </nav>
+
+  <div class="main-register">
+      <div class="right-register">
+          <div class="card-register">
+              <h1>Register</h1>
+
+              <div class="textfield">
+                  <label for="username">Username</label>
+                  <div class="input-wrapper">
+                      <span class="icon">👤</span>
+                      <input type="text" id="username" placeholder="Your username" autocomplete="username">
+                  </div>
+              </div>
+
+              <div class="textfield">
+                  <label for="email">Email</label>
+                  <div class="input-wrapper">
+                      <span class="icon">📧</span>
+                      <input type="email" id="email" placeholder="Your email" autocomplete="email">
+                  </div>
+              </div>
+
+              <div class="textfield">
+                  <label for="password">Password</label>
+                  <div class="input-wrapper">
+                      <span class="icon">🔒</span>
+                      <input type="password" id="password" placeholder="Create a password" autocomplete="new-password">
+                  </div>
+              </div>
+
+              <div class="textfield">
+                  <label for="confirmPassword">Confirm Password</label>
+                  <div class="input-wrapper">
+                      <span class="icon">🔒</span>
+                      <input type="password" id="confirmPassword" placeholder="Repeat your password" autocomplete="new-password">
+                  </div>
+              </div>
+
+              <button class="btn-register" type="button">Register</button>
+
+              <p class="register-text">Already have an account?</p>
+              <button class="btn-login" onclick="window.location.href='login.html'">Login</button>
+          </div>
+      </div>
+  </div>
+
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const btnRegister = document.querySelector('.btn-register');
+
+    btnRegister.addEventListener('click', async () => {
+        const name = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const confirmPassword = document.getElementById('confirmPassword').value.trim();
+
+        if (!name || !email || !password || !confirmPassword) {
+            alert("Please fill all fields!");
+            return;
+        }
+
+        if (password.length < 8) {
+            alert("Password must have at least 8 characters!");
+            return;
+        }
+
+        if (!/[A-Z]/.test(password)) {
+            alert("Password must contain at least one uppercase letter!");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            alert("Passwords do not match!");
+            return;
+        }
+
+        const user = { name, email, password, age: 18, gender: "N/A", budget: 0 };
+
+        try {
+            const response = await fetch('http://localhost:8080/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(user)
+            });
+
+            if (!response.ok) throw new Error("Server error");
+
+            alert("Registration successful!");
+            window.location.href = "login.html";
+        } catch (err) {
+            console.error(err);
+            alert("Failed to connect to server.");
+        }
+    });
+  });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ExpenserMon Profile: Manage your personal details, track stats, and customize your financial journey.">
+    <meta name="keywords" content="profile, user dashboard, financial app, ExpenserMon">
+    <title>ExpenserMon - Profile</title>
+    <link rel="shortcut icon" href="Expenser.png" type="image/x-icon">
+    <link rel="stylesheet" href="styleProfile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+     <div class="your-element"></div>
+
+    <nav class="navbar">
+        <div class="logo-container">
+            <span class="logo">ExpenserMon</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="homepag.html">Home</a></li>
+            <li><a href="profile.html" class="active">Profile</a></li>
+            <li><a href="expenses.html">Expenses</a></li>
+            <li><a href="Login.html" id="logout-btn">Logout</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="profile-container">
+            <div class="profile-card">
+                <div id="loading-indicator" class="loading">Loading profile...</div>
+                <form id="profile-form">
+                    <img src="caminho/para/avatar-padrao.png" alt="User Avatar" class="avatar" id="avatar" aria-label="Click to change avatar in edit mode">
+                    <input type="file" id="avatar-input" accept="image/*" class="hidden" aria-hidden="true">
+
+                    <div class="info-field">
+                        <h2 id="name-display"></h2>
+                        <input type="text" id="name-input" class="editable-input hidden" placeholder="Enter your full name" maxlength="50" aria-label="Edit name">
+                        <p class="username" id="username-display"></p>
+                    </div>
+
+                    <p class="email" id="email-display"></p>
+
+                    <div class="info-field">
+                        <p>Gender: <span id="gender-display">Not specified</span></p>
+                        <select id="gender-input" class="editable-input hidden" aria-label="Select gender">
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                            <option value="Prefer not to say">Prefer not to say</option>
+                        </select>
+                    </div>
+
+                    <div class="info-field">
+                        <p>Bio: <span id="bio-display">No bio added yet.</span></p>
+                        <textarea id="bio-input" class="editable-input hidden" placeholder="Tell us about yourself (max 150 characters)" maxlength="150" rows="3" aria-label="Edit bio"></textarea>
+                    </div>
+
+                    <div class="info-field">
+                        <p>Member Since: <span id="member-since">N/A</span> <span class="member-badge">Member</span></p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="profile-progress"></div>
+                        </div>
+                        <small>Profile Completion: <span id="completion-percent">0%</span></small>
+                    </div>
+
+                    <hr style="border-color: rgba(111,207,255,0.2); margin: 20px 0;">
+
+                    <div class="stats">
+                        <div class="stat">
+                            <i class="fas fa-exchange-alt stat-icon"></i>
+                            <h3 id="transactions">0</h3>
+                            <p>Transactions</p>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-trophy stat-icon"></i>
+                            <h3 id="achievements-count">0</h3>
+                            <p>Achievements</p>
+                        </div>
+                    </div>
+
+                    <div class="achievements-list">
+                        <p>Your Achievements:</p>
+                        <ul id="achievements-list"></ul>
+                        <button type="button" class="btn-add-achievement" id="add-achievement-btn" aria-label="Add a new achievement">Add Achievement (Demo)</button>
+                    </div>
+
+                    <div class="profile-actions">
+                        <button type="button" class="btn-edit" id="edit-btn" aria-label="Edit profile">Edit Profile</button>
+                        <button type="submit" class="btn-save hidden" id="save-btn" aria-label="Save changes">Save Changes</button>
+                        <button type="button" class="btn-cancel hidden" id="cancel-btn" aria-label="Cancel editing">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 ExpenserMon. All rights reserved. | <a href="#" style="color: #6fcfff;">Privacy Policy</a></p>
+    </footer>
+
+    <div id="custom-alert" class="custom-alert-overlay hidden" role="dialog" aria-modal="true">
+        <div class="custom-alert-card" id="alert-card">
+            <h3 id="alert-title"></h3>
+            <p id="alert-message"></p>
+            <button id="alert-close-btn" class="btn-alert-close" aria-label="Close alert">OK</button>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "http://localhost:8080/api/profile";
+        const email = localStorage.getItem("userEmail");
+   
+        const DEFAULT_AVATAR_SRC = 'caminho/para/avatar-padrao.png'; 
+
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const avatar = document.getElementById('avatar');
+        const avatarInput = document.getElementById('avatar-input');
+        const editBtn = document.getElementById('edit-btn');
+        const saveBtn = document.getElementById('save-btn');
+        const cancelBtn = document.getElementById('cancel-btn');
+        const addAchievementBtn = document.getElementById('add-achievement-btn');
+        const profileForm = document.getElementById('profile-form');
+
+        const nameDisplay = document.getElementById('name-display');
+        const usernameDisplay = document.getElementById('username-display');
+        const emailDisplay = document.getElementById('email-display');
+        const genderDisplay = document.getElementById('gender-display');
+        const bioDisplay = document.getElementById('bio-display');
+        const memberSinceDisplay = document.getElementById('member-since');
+        const achievementsCount = document.getElementById('achievements-count');
+        const achievementsList = document.getElementById('achievements-list');
+        const profileProgress = document.getElementById('profile-progress');
+        const completionPercent = document.getElementById('completion-percent');
+
+        const nameInput = document.getElementById('name-input');
+        const genderInput = document.getElementById('gender-input');
+        const bioInput = document.getElementById('bio-input');
+
+        const customAlertOverlay = document.getElementById('custom-alert');
+        const alertCard = document.getElementById('alert-card');
+        const alertTitle = document.getElementById('alert-title');
+        const alertMessage = document.getElementById('alert-message');
+        const alertCloseBtn = document.getElementById('alert-close-btn');
+
+        let originalUserData = {};
+        let avatarChanged = false; 
+
+        function showAlert(title, message, type = 'success') {
+            alertCard.className = 'custom-alert-card';
+            
+            if (type === 'success') {
+                alertCard.classList.add('success-border');
+            } else if (type === 'error') {
+                alertCard.classList.add('error-border');
+            }
+
+            alertTitle.textContent = title;
+            alertMessage.textContent = message;
+            customAlertOverlay.classList.add('show');
+        }
+
+        alertCloseBtn.addEventListener('click', () => {
+            customAlertOverlay.classList.remove('show');
+        });
+        
+        customAlertOverlay.addEventListener('click', (e) => {
+            if (e.target === customAlertOverlay) {
+                customAlertOverlay.classList.remove('show');
+            }
+        });
+
+        function toggleEditMode(isEditing) {
+            const elementsToToggle = [
+                nameDisplay, genderDisplay, bioDisplay,
+                editBtn
+            ];
+            const inputsToToggle = [
+                nameInput, genderInput, bioInput,
+                saveBtn, cancelBtn
+            ];
+
+            elementsToToggle.forEach(el => el.classList.toggle('hidden', isEditing));
+            inputsToToggle.forEach(el => el.classList.toggle('hidden', !isEditing));
+
+            avatar.style.cursor = isEditing ? 'pointer' : 'default';
+            avatar.onclick = isEditing ? () => avatarInput.click() : null;
+            
+            avatar.classList.toggle('editing', isEditing);
+        }
+
+        function calculateProfileCompletion(user) {
+            let completed = 0;
+
+            const hasBio = user.bio && user.bio.trim() !== '';
+
+            if (user.name) completed++;
+            if (user.gender && user.gender !== 'Prefer not to say') completed++;
+            if (hasBio) completed++;
+            if (user.avatar && user.avatar !== DEFAULT_AVATAR_SRC) completed++;
+            
+            return Math.min((completed / 4) * 100, 100);
+        }
+
+        function loadUserData() {
+            if (!email) {
+                showAlert("Login Required", "User not logged in!", 'error');
+                setTimeout(() => { window.location.href = "login.html"; }, 1000);
+                return;
+            }
+
+            loadingIndicator.style.display = 'block';
+            fetch(`${API_URL}/${email}`)
+            .then(res => {
+                if (res.status === 404) throw new Error("User not found.");
+                if (!res.ok) throw new Error("Error loading profile");
+                return res.json();
+            })
+            .then(user => {
+                originalUserData = user;
+                avatarChanged = false; 
+
+                nameDisplay.textContent = user.name || 'N/A';
+     
+                const username = user.email ? user.email.split('@')[0] : 'user';
+                usernameDisplay.textContent = '@' + username;
+                
+                emailDisplay.textContent = user.email;
+                genderDisplay.textContent = user.gender || 'Not specified';
+                bioDisplay.textContent = user.bio || 'No bio added yet.';
+                memberSinceDisplay.textContent = user.memberSince || 'N/A';
+
+                const achievements = user.achievements || [];
+                achievementsCount.textContent = achievements.length;
+                achievementsList.innerHTML = achievements.map(ach => `<li>${ach}</li>`).join('');
+
+                const completion = calculateProfileCompletion(user);
+                profileProgress.style.width = `${completion}%`;
+                completionPercent.textContent = `${Math.round(completion)}%`;
+
+                nameInput.value = user.name || '';
+                genderInput.value = user.gender || '';
+                bioInput.value = user.bio || '';
+                
+                // Lógica corrigida do avatar: Confia no servidor ou usa padrão
+                avatar.src = user.avatar && user.avatar.trim() !== '' ? user.avatar : DEFAULT_AVATAR_SRC;
+                
+                loadingIndicator.style.display = 'none';
+            })
+            .catch(err => {
+                console.error("Fetch Error:", err);
+                showAlert("Connection Error", "Error loading user data.", 'error');
+                loadingIndicator.style.display = 'none';
+            });
+        }
+
+        async function saveProfileChanges(updatedData) {
+            const profileUpdatePromise = fetch(`${API_URL}/${email}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedData)
+            })
+            .then(res => {
+                if (res.status === 400) throw new Error("Invalid data submitted.");
+                if (!res.ok) throw new Error("Profile update failed.");
+                return res.json();
+            });
+
+            const results = [profileUpdatePromise];
+            
+            // 2. Envia a requisição do Avatar SE ele foi alterado
+            if (avatarChanged) {
+                const avatarUpdatePromise = fetch(`${API_URL}/${email}/avatar`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ avatar: avatar.src })
+                })
+                .then(res => {
+                    if (!res.ok) throw new Error("Avatar update failed.");
+                    return res.json();
+                });
+                results.push(avatarUpdatePromise);
+            }
+
+            // Espera todas as atualizações
+            await Promise.all(results);
+
+            showAlert("Success!", "Profile updated successfully!", 'success');
+            loadUserData();
+            toggleEditMode(false);
+            avatar.classList.remove('editing');
+
+        }
+
+        profileForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const updatedData = {
+                name: nameInput.value.trim(),
+                gender: genderInput.value,
+                bio: bioInput.value.trim()
+            };
+
+            // Verifica se houve alguma mudança nos dados
+            const hasDataChanged = updatedData.name !== originalUserData.name || 
+                                   updatedData.gender !== originalUserData.gender || 
+                                   updatedData.bio !== originalUserData.bio;
+
+            if (!hasDataChanged && !avatarChanged) {
+                showAlert("No Changes", "No changes detected. Nothing saved.", 'success');
+                toggleEditMode(false);
+                return;
+            }
+
+            // Chama a função de salvamento assíncrona
+            saveProfileChanges(updatedData)
+            .catch(err => {
+                console.error("Save Error:", err);
+                showAlert("Update Failed", err.message || "An unknown error occurred.", 'error');
+            });
+        });
+
+        // Evento de alteração do avatar: Apenas pré-visualiza e define o flag
+        avatarInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                avatar.src = event.target.result; // Pré-visualiza a imagem
+                avatarChanged = true; // Define o flag de mudança
+                avatar.classList.add('editing');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Eventos dos botões de edição/cancelamento
+        document.addEventListener("DOMContentLoaded", loadUserData);
+
+        editBtn.addEventListener('click', () => {
+            toggleEditMode(true);
+            // Redefinir flag de avatar ao entrar no modo edição
+            avatarChanged = false; 
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            
+            nameInput.value = originalUserData.name || '';
+            genderInput.value = originalUserData.gender || '';
+            bioInput.value = originalUserData.bio || '';
+            avatar.src = originalUserData.avatar || DEFAULT_AVATAR_SRC;
+            
+            avatarChanged = false; 
+            toggleEditMode(false);
+            avatar.classList.remove('editing');
+        });
+
+        addAchievementBtn.addEventListener('click', () => {
+             const achievement = prompt("Enter a new achievement (e.g., 'First Expense Logged'):");
+            if (achievement) {
+                fetch(`${API_URL}/${email}/achievements`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ achievement })
+                })
+                .then(res => {
+                    if (!res.ok) throw new Error("Failed to add achievement.");
+                    return res.json();
+                })
+                .then(() => {
+                    showAlert("Success!", "Achievement added!", 'success');
+                    loadUserData();
+                })
+                .catch(err => {
+                    console.error("Add Achievement Error:", err);
+                    showAlert("Error", "Failed to add achievement.", 'error');
+                });
+            }
+        });
+        
+        document.getElementById("logout-btn").addEventListener("click", () => {
+            localStorage.removeItem("userEmail");
+           
+            window.location.href = "login.html";
+        });
+    </script>
+</body>
+</html>

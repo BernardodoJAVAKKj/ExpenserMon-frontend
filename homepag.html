@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ExpenserMon: Manage your finances with style. Track expenses, set goals, and monitor progress in a fun, practical way.">
+  <meta name="keywords" content="expense tracker, financial management, budgeting app, personal finance">
+  <meta name="author" content="ExpenserMon Team">
+  <meta property="og:title" content="ExpenserMon - Professional Financial Management">
+  <meta property="og:description" content="Track expenses, set goals, and gain insights with ExpenserMon.">
+  <meta property="og:image" content="https://example.com/expensermon-og-image.png"> <!-- Replace with actual image URL -->
+  <meta property="og:url" content="https://expensermon.com"> <!-- Replace with your site URL -->
+  <meta name="twitter:card" content="summary_large_image">
+  <title>ExpenserMon - Professional Financial Management</title>
+  
+  <link rel="stylesheet" href="styleHome.css">
+  <link rel="icon" href="Expenser.png" type="image/x-icon">
+  <link rel="preload" href="Expenser.png" as="image"> <!-- Preload favicon for faster loading -->
+  
+  <!-- Structured Data for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "ExpenserMon",
+    "description": "A smart expense tracker for managing finances.",
+    "url": "https://expensermon.com",
+    "applicationCategory": "FinanceApplication"
+  }
+  </script>
+</head>
+<body>
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <div class="background" aria-hidden="true"></div>
+
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="logo-container">
+      <span class="logo">ExpenserMon</span>
+    </div> 
+    <ul class="nav-links">
+      <li><a href="#main-content" class="active">Home</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#about">About</a></li>
+      
+    </ul>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <main id="main-content">
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Take Control of Your <span>Finances</span> Effortlessly</h1>
+        <p>Track expenses, set achievable goals, and gain insights into your spending with ExpenserMon—a smart, user-friendly tool designed for modern financial management.</p>
+        <a href="Login.html" class="btn-primary">Get Started Free</a>
+      </div>
+      <iframe 
+        src="https://lottie.host/embed/08636a4d-783f-4e80-8174-84b708331144/UQAEfIYivY.lottie"
+        class="hero-animation"
+        frameborder="0"
+        loading="lazy"
+        alt="Animated illustration of financial management with charts and coins"
+        title="Financial management animation"
+      ></iframe>
+    </section>
+
+    <section id="features" class="features">
+      <h2>Key Features</h2>
+      <div class="feature-grid">
+        <div class="feature">
+          <div class="feature-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </div>
+          <h3>Expense Tracking</h3>
+          <p>Monitor income and expenses with precision, ensuring full visibility and control over your financial health.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+          </div>
+          <h3>Goal Setting</h3>
+          <p>Set personalized financial targets and track real-time progress to stay motivated and on course.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+            </svg>
+          </div>
+          <h3>Smart Alerts</h3>
+          <p>Receive timely notifications when spending approaches or exceeds your predefined limits.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+            </svg>
+          </div>
+          <h3>Detailed Reports</h3>
+          <p>Analyze your finances with intuitive charts and reports to understand spending patterns and optimize savings.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="testimonials">
+      <h2>What Our Users Say</h2>
+      <div class="testimonial-grid">
+        <div class="testimonial">
+          <p>"ExpenserMon has transformed how I manage my budget. It's intuitive and helps me stay on track without the hassle."</p>
+          <cite>- Alex Johnson, Freelancer</cite>
+        </div>
+        <div class="testimonial">
+          <p>"The goal-setting feature is a game-changer. I've saved more in the last six months than ever before."</p>
+          <cite>- Maria Gonzalez, Small Business Owner</cite>
+        </div>
+        <div class="testimonial">
+          <p>"Professional and reliable. The reports give me clear insights, making financial planning straightforward."</p>
+          <cite>- David Lee, Accountant</cite>  
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about">
+      <h2>About ExpenserMon</h2>
+      <p>ExpenserMon combines innovative technology with user-centric design to make financial management engaging and effective. Inspired by digital experiences, it empowers users to build better financial habits without complexity.</p>
+    </section>
+
+    <section class="cta">
+      <h2>Elevate Your Financial Control</h2> 
+      <p>Join thousands of users who trust ExpenserMon for smarter budgeting. Sign up today and start your journey toward financial freedom.</p>
+      <a href="Register.html" class="btn-primary">Create Your Free Account</a>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="footer-content">
+      <p>&copy; 2025 ExpenserMon. All rights reserved.</p>
+      <ul class="footer-links">
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#contact">Contact Us</a></li>
+      </ul>
+      <!-- Simple Contact Form (Integrate with Formspree or similar) -->
+      <form action="https://formspree.io/f/your-form-id" method="POST" class="contact-form" aria-labelledby="contact-form-label">
+        <h3 id="contact-form-label">Get in Touch</h3>
+        <input type="email" name="email" placeholder="Your Email" required aria-label="Email address">
+        <textarea name="message" placeholder="Your Message" required aria-label="Message"></textarea>
+        <button type="submit" class="btn-primary">Send Message</button>
+      </form>
+      <p>Contact: support@expensermon.com | +1 (555) 123-4567</p>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" aria-label="Back to top">↑</button>
+
+  <script src="script.js"></script> <!-- Moved JS to external file for better organization -->
+</body>
+</html>
